@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-    import Youtube from "@sveltecasts/svelte-youtube";
+    import Youtube from "svelte-youtube";
     import Modules from "./Modules.svelte"
     import { currentModule } from "./stores.js"
     let video, position, interval;
