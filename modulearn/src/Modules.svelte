@@ -1,7 +1,6 @@
 <script>
   export let modules
   import Module from "./Module.svelte"
-
 </script>
 
 <span style="float: left">

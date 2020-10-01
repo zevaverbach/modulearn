@@ -1,32 +1,37 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { currentModule } from "./stores.js"
+  import currentModule from "./stores"
 
   const dispatcher = createEventDispatcher()
 
   export let module
-  let class_
-  $: class_ = $currentModule === module.name ? "current" : ""
+  let klass
+  $: klass = $currentModule === module.name ? "current" : ""
 
   // TODO: add checkboxes for 'want to watch'
   // TODO: gray out watched modules
-
 </script>
 
-<div on:click={() => dispatcher("selectModule", {module})} class="{class_}">I want to {module.outcome}.</div>
+<div on:click={() => dispatcher("selectModule", { module })} class="{klass}"><span>I want to {module.outcome}.</span></div>
 
 
 <style>
-  div {
-    padding: .3em;
+  @media (prefers-color-scheme: light) {
+    div.current span { background-color: yellow;}
+    div span:hover { background-color: lightgrey; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    div.current span { background-color: blue; }
+    div span:hover {
+      background-color: lavender;
+      color: #222;
+    }
+  }
+
+  div { padding: .3em; }
+  span {
     cursor: pointer;
+    padding: .3em;
   }
-  div.current {
-    background-color: yellow;
-  }
-
-  div:hover {
-    background-color: lightgrey;
-  }
-
 </style>

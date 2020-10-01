@@ -1,4 +1,5 @@
-import { writable } from 'svelte/store'
+import { writable } from 'svelte/store';
 
-export const currentModule = writable(null)
+const currentModule = writable(null);
 
+export default currentModule
