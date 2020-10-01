@@ -6,7 +6,7 @@
   import currentModule from './stores'
   import DATA from './data'
 
-  let video; let position; let interval;
+  let video; let position; let interval; let timeout;
 
   // TODO: load data from JSON or an API
   // TODO: validate the data: overlaps? gaps? (gaps should be ok).
@@ -25,12 +25,21 @@
   }
 
   const onSelectModule = event => {
-    const module = event.detail.module
+    const { module } = event.detail
     if (module.name !== $currentModule) {
+      if (timeout) clearTimeout(timeout)
       clearInterval(interval)
       currentModule.update(() => module.name)
       video.jumpTo(module.start)
-      positionUpdater()
+      timeout = setTimeout(() => positionUpdater(), 1000)
+    }
+  }
+
+  const getModuleIndex = moduleName => {
+    for (const index in DATA.modules) {
+      if (DATA.modules[index].name === moduleName) {
+        return parseInt(index)
+      }
     }
   }
 
@@ -44,7 +53,44 @@
 
   onMount(() => positionUpdater())
 
+  const handleKeyDown = e => {
+      e.preventDefault()
+      const { key, code } = e
+      if (["j", "ArrowDown"].includes(key)) {
+          nextModule()
+      } else if (["k", "ArrowUp"].includes(key)) {
+          prevModule()
+      } else if ([32, "Space"].includes(code)) {
+          video.toggle()
+      } else if (["l", "ArrowRight"].includes(key)) {
+          video.jumpTo(position + 5)
+      } else if (["h", "ArrowLeft"].includes(key)) {
+          video.jumpTo(position - 5)
+      }
+  }
+
+  const nextModule = () => {
+    const currentModuleIndex = getModuleIndex($currentModule)
+    if (currentModuleIndex < DATA.modules.length - 1) {
+      const mod = DATA.modules[currentModuleIndex + 1]
+      onSelectModule({detail: {module: mod}})
+    } else if (currentModuleIndex === undefined) {
+      const mod = DATA.modules[0]
+      onSelectModule({detail: {module: mod}})
+    }
+  }
+
+  const prevModule = () => {
+    const currentModuleIndex = getModuleIndex($currentModule) || 1
+    if (currentModuleIndex > 0) {
+      const mod = DATA.modules[currentModuleIndex - 1]
+      onSelectModule({detail: {module: mod}})
+    }
+  }
+
 </script>
+
+<svelte:window on:keydown={handleKeyDown} />
 
 <main>
   <Youtube bind:this={video} videoId={DATA.uid} />
