@@ -1,8 +1,9 @@
-# Purpose
+[Demo](https://modulearn.vercel.app)
 
+# Purpose
 Learning something new is exciting and daunting. It can also be annoying and time-consuming when you already know a significant part of what's being taught.
 
-## Solutions
+## Existing Solutions
 
 ### Fast-Forwarding
 A lot of learning material is broken down into modules, and to an extent the later material builds on the earlier. This makes fast-forwarding/skipping modules a viable solution. You can fast-forward even when things aren't so nicely broken down.
@@ -13,21 +14,22 @@ Sometimes there's transcripts provided along with recorded learning material. Wh
 ### Learning by Doing
 A lot of the time the best way to learn is to work on a project that uses the skill you want to learn. When you get stuck, just Google your way out of it or go to the relevant part of the documentation.
 
+## Proposed Solution
+Simple navigation across and within learning "modules", enabled by 
 
-## Module Types
+    1) a plugin linking the content with the navigation
+    2) JSON for every module/submodule indicating their _prerequisites_ and intended learning _outcomes_
 
-### Setting the Table
-Obtaining and installing materials, libraries, etc.
+### Creating the JSON Metadata
+(see JSON example under "API/Recorded Media" below)
+For someone familiar with a unit of learning -- say, a 45-minute tech talk -- they may be able to create the JSON by hand without a lot of trouble.
 
-### Prerequisites
-Learning entire subjects that the current material won't make sense without.
-
-### Subtopics
-This is the bread and butter module type: "Do you understand X?" (X can be a subtopic description, but even better is an example of the subtopic)
+For large bodies of media, it might be better to try to automate this using transcripts + NLP, perhaps by including existing metadata about the media such as tables of contents, descriptions, etc.
 
 # Business Model
+... (see "Things That Could be Built..." below)
 
-## Sharing Economy
+## Preexisting Assets
 There is a massive and growing body of media which is fodder for annotation and modularization:
 
     1) podcasts
@@ -45,7 +47,8 @@ Provide JSON file like this:
 
 ```
 {
-  "filename": "How to Navigate a Codebase"
+  "platform": "YouTube"
+  "uid": "askasdl;",
   "prereqs": [
     "I know a programming language to some extent.",
     "I know how to use a terminal to some extent."
@@ -58,13 +61,13 @@ Provide JSON file like this:
       "name": "Find a Good Project",
       "start": 25.32,
       "end": 141.12,
-      "outcome": "I have a project in mind whose codebase I want to navigate."
+      "outcome": "have a project in mind whose codebase I want to navigate."
     },
     {
       "name": "Clone the Project",
       "start": 141.12,
       "end": 157.65,
-      "outcome": "I've cloned the project."
+      "outcome": "cloned the project."
     },
     ...
   ]
@@ -92,9 +95,13 @@ Some podcasts provide helpful metadata for navigating to the parts you're intere
 2) store the "want to listen" items that you don't yet have the requisite knowledge to understand?
 3) have a standardized, centralized list of topics you a) are interested in and b) understand?
 
+# Things That Could be Built On Top of It
+Searchable video collections to retrieve the submodules you're interested in, and maybe even create a learning roadmap for a given topic.
+
 # Resources
 - [YouTube iframe API](https://developers.google.com/youtube/iframe_api_reference#Retrieving_video_information)
 - use asciinema for tech talk type things?
   - or [castty](https://github.com/dhobsd/castty) (includes sound)
 - https://github.com/sampotts/plyr#api
 - https://github.com/vime-js/vime
+- https://github.com/zevaverbach/svelte-youtube

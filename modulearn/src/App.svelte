@@ -1,8 +1,10 @@
 <script>
-	import { onMount } from 'svelte';
     import Youtube from "svelte-youtube";
+	import { onMount } from 'svelte';
+
     import Modules from "./Modules.svelte"
     import { currentModule } from "./stores.js"
+
     let video, position, interval;
 
     // TODO: load data from JSON or an API
