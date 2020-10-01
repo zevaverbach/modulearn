@@ -17,11 +17,12 @@ A lot of the time the best way to learn is to work on a project that uses the sk
 ## Proposed Solution
 Simple navigation across and within learning "modules", enabled by 
 
-    1) a plugin linking the content with the navigation
-    2) JSON for every module/submodule indicating their _prerequisites_ and intended learning _outcomes_
+1) a plugin linking the content with the navigation
+2) JSON for every module/submodule indicating their _prerequisites_ and intended learning _outcomes_
 
 ### Creating the JSON Metadata
 (see JSON example under "API/Recorded Media" below)
+
 For someone familiar with a unit of learning -- say, a 45-minute tech talk -- they may be able to create the JSON by hand without a lot of trouble.
 
 For large bodies of media, it might be better to try to automate this using transcripts + NLP, perhaps by including existing metadata about the media such as tables of contents, descriptions, etc.
@@ -32,13 +33,13 @@ For large bodies of media, it might be better to try to automate this using tran
 ## Preexisting Assets
 There is a massive and growing body of media which is fodder for annotation and modularization:
 
-    1) podcasts
-    2) conference talks
-    3) news media
-    4) MOOCs
-    5) topical/long-form YouTube
-    6) docuseries
-    7) ...
+1) podcasts
+2) conference talks
+3) news media
+4) MOOCs
+5) topical/long-form YouTube
+6) docuseries
+7) ...
 
 # API
 
