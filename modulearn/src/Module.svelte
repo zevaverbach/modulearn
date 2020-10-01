@@ -1,12 +1,11 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import currentModule from "./stores"
+  import { currentModule } from "./stores"
 
   const dispatcher = createEventDispatcher()
 
   export let module
-  let klass
-  $: klass = $currentModule === module.name ? "current" : ""
+  $: klass = $currentModule && $currentModule.name === module.name ? "current" : ""
 
   // TODO: add checkboxes for 'want to watch'
   // TODO: gray out watched modules

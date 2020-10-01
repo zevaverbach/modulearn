@@ -3,10 +3,11 @@
   import { onMount } from 'svelte';
 
   import Modules from './Modules.svelte'
-  import currentModule from './stores'
+  import { position, currentModule } from './stores'
+  import { getModuleIndex, getModule } from './utils'
   import DATA from './data'
 
-  let video; let position; let interval; let timeout;
+  let video; let interval; let timeout; let firstUpdate;
 
   // TODO: load data from JSON or an API
   // TODO: validate the data: overlaps? gaps? (gaps should be ok).
@@ -15,39 +16,31 @@
   // TODO: (depends on above) enable search
 
   const positionUpdater = () => {
-    interval = setInterval(() => {
-      position = video.position()
-      const newModule = getModule(position)
-      if (newModule !== $currentModule) {
-        currentModule.update(() => newModule)
+      if (firstUpdate) {
+          firstUpdate = false
+          return 
       }
+    interval = setInterval(() => {
+      const newModule = getModule($position)
+      const pos = video.position()
+      position.update(() => pos)
+        if (!newModule 
+            || newModule && !$currentModule 
+            || newModule && $currentModule && newModule.name !== $currentModule.name)
+        { currentModule.update(() => newModule) }
     }, 100)
   }
 
   const onSelectModule = event => {
     const { module } = event.detail
-    if (module.name !== $currentModule) {
-      if (timeout) clearTimeout(timeout)
+    if (module && !$currentModule || module.name !== $currentModule.name) {
+      clearTimeout(timeout)
       clearInterval(interval)
-      currentModule.update(() => module.name)
+      currentModule.update(() => module)
+      position.update(() => module.start)
       video.jumpTo(module.start)
-      timeout = setTimeout(() => positionUpdater(), 1000)
-    }
-  }
-
-  const getModuleIndex = moduleName => {
-    for (const index in DATA.modules) {
-      if (DATA.modules[index].name === moduleName) {
-        return parseInt(index)
-      }
-    }
-  }
-
-  const getModule = position => {
-    for (const module of DATA.modules) {
-      if (position > module.start && position < module.end) {
-        return module.name
-      }
+      firstUpdate = true
+      timeout = setTimeout(positionUpdater, 500)
     }
   }
 
@@ -63,27 +56,32 @@
       } else if ([32, "Space"].includes(code)) {
           video.toggle()
       } else if (["l", "ArrowRight"].includes(key)) {
-          video.jumpTo(position + 5)
+          video.jumpTo($position + 5)
+          clearInterval(interval)
+          positionUpdater()
       } else if (["h", "ArrowLeft"].includes(key)) {
-          video.jumpTo(position - 5)
+          video.jumpTo($position - 5)
+          clearInterval(interval)
+          positionUpdater()
       }
   }
 
   const nextModule = () => {
-    const currentModuleIndex = getModuleIndex($currentModule)
-    if (currentModuleIndex < DATA.modules.length - 1) {
-      const mod = DATA.modules[currentModuleIndex + 1]
-      onSelectModule({detail: {module: mod}})
-    } else if (currentModuleIndex === undefined) {
-      const mod = DATA.modules[0]
+    if (!$currentModule) {
+      return onSelectModule({detail: {module: DATA.modules[0]}})
+    }
+    const idx = $currentModule.index
+    if (idx < DATA.modules.length - 1) {
+      const mod = DATA.modules[idx + 1]
       onSelectModule({detail: {module: mod}})
     }
   }
 
   const prevModule = () => {
-    const currentModuleIndex = getModuleIndex($currentModule) || 1
-    if (currentModuleIndex > 0) {
-      const mod = DATA.modules[currentModuleIndex - 1]
+    if (!$currentModule) return
+    const idx = $currentModule.index || 1
+    if (idx > 0) {
+      const mod = DATA.modules[idx - 1]
       onSelectModule({detail: {module: mod}})
     }
   }
