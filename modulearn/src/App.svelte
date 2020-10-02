@@ -41,6 +41,14 @@
 
   onMount(() => positionUpdater())
 
+  const toggle = video => {
+      if (video.paused()) {
+          video.play()
+      } else {
+          video.pause()
+      }
+  }
+
   const handleKeyDown = e => {
       e.preventDefault()
       const { key, code } = e
@@ -49,7 +57,7 @@
       } else if (["k", "ArrowUp"].includes(key)) {
           prevModule()
       } else if ([32, "Space"].includes(code)) {
-          video.toggle()
+          toggle(video)
       } else if (["l", "ArrowRight"].includes(key)) {
           clearInterval(interval)
           video.jumpTo($position + 5)
