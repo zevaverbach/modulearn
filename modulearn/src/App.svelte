@@ -44,10 +44,11 @@
   }
 
   const handleKeyDown = e => {
-      const { key, code } = e
-      if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
+      const { key, code, ctrlKey } = e
+      if (e.shiftKey || e.altKey || e.metaKey) {
           return
       }
+      let amount = 5
       if (["j", "ArrowDown"].includes(key)) {
           e.preventDefault()
           nextModule()
@@ -60,12 +61,18 @@
       } else if (["l", "ArrowRight"].includes(key)) {
           e.preventDefault()
           clearInterval(interval)
-          video.jumpTo($position + 5)
+          if (ctrlKey) {
+              amount = 30
+          }
+          video.jumpTo($position + amount)
           positionUpdater()
       } else if (["h", "ArrowLeft"].includes(key)) {
           e.preventDefault()
           clearInterval(interval)
-          video.jumpTo($position - 5)
+          if (ctrlKey) {
+              amount = 30
+          }
+          video.jumpTo($position - amount)
           positionUpdater()
       }
   }
