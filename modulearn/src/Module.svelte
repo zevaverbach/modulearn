@@ -2,13 +2,13 @@
   import { createEventDispatcher } from 'svelte';
   import { currentModule, position } from "./stores"
 
-  const dispatch = createEventDispatcher()
-
   export let module
-  let progressBar
+
+  const dispatch = createEventDispatcher()
+  const progressWidth = 240
   const getProgress = pos => (pos - module.start) / module.duration * 100
 
-  let selected; let progress; let klass;
+  let selected; let progress; let klass; let progressBar
 
   $: selected = $currentModule && $currentModule.name === module.name
   $: if (selected) {
@@ -17,33 +17,29 @@
     } else {
       progress = null;
       klass = ""
-    }
+  }
 
   const progressClick = e => {
 	// https://stackoverflow.com/a/28311723/4386191
-	const max = 160
 	const pos = e.pageX - progressBar.offsetLeft
-	let dual = Math.round(pos / max * 100)
-
-	if (dual > 100) {
-      console.log(dual)
-	  dual = 100;
-	}
-
+	let dual = Math.round(pos / progressWidth * 100)
+	if (dual > 100) dual = 100;
     dispatch("repositionInModule", {percentage: dual})
-
-	}
+  }
 
 </script>
 
 <div on:click={() => dispatch("selectModule", { module })} >
   <span class="{klass}">I want to {module.outcome}.</span>
   {#if progress}
-      <progress bind:this={progressBar} on:click={progressClick} value={progress} max=100>Hi</progress>
+      <progress 
+         bind:this={progressBar} 
+         on:click={progressClick} 
+         value={progress} 
+         max=100>
+      </progress>
   {/if}
 </div>
-
-
 
 <style>
   @media (prefers-color-scheme: light) {
@@ -54,9 +50,13 @@
   @media (prefers-color-scheme: dark) {
     span.current { background-color: blue; }
     span:hover {
-      background-color: lavender;
-      color: #222;
+      background-color: purple;
     }
+  }
+
+  progress {
+    width: 240px;
+    height: 1.2em;
   }
 
   div { padding: .3em; }

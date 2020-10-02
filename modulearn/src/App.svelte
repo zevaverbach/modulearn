@@ -13,7 +13,6 @@
     interval = setInterval(() => {
       const pos = video.position()
       const newModule = getModule(pos)
-      if (!pos) return console.log('no pos')
       position.update(() => pos)
         if (newModule && !$currentModule 
             || newModule && $currentModule && newModule.name !== $currentModule.name)
@@ -36,7 +35,6 @@
   const onRepositionInModule = event => {
     const { percentage } = event.detail
     const pos = $currentModule.start + ($currentModule.duration * percentage / 100)
-    console.log(pos)
     jumpTo(pos)
   }
 
