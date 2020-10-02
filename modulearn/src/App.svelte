@@ -33,6 +33,13 @@
     }
   }
 
+  const onRepositionInModule = event => {
+    const { percentage } = event.detail
+    const pos = $currentModule.start + ($currentModule.duration * percentage / 100)
+    console.log(pos)
+    jumpTo(pos)
+  }
+
   onMount(() => positionUpdater())
 
   const toggle = video => {
@@ -43,12 +50,18 @@
       }
   }
 
+  const jumpTo = pos => {
+      clearInterval(interval)
+      video.jumpTo(pos)
+      positionUpdater()
+  }
+
   const handleKeyDown = e => {
-      const { key, code, ctrlKey } = e
-      if (e.shiftKey || e.altKey || e.metaKey) {
-          return
-      }
-      let amount = 5
+      const { key, code, ctrlKey, shiftKey, altKey, metaKey } = e
+
+      if (shiftKey || altKey || metaKey) return
+
+      const amount = ctrlKey ? 30 : 5
       if (["j", "ArrowDown"].includes(key)) {
           e.preventDefault()
           nextModule()
@@ -60,20 +73,10 @@
           toggle(video)
       } else if (["l", "ArrowRight"].includes(key)) {
           e.preventDefault()
-          clearInterval(interval)
-          if (ctrlKey) {
-              amount = 30
-          }
-          video.jumpTo($position + amount)
-          positionUpdater()
+          jumpTo($position + amount)
       } else if (["h", "ArrowLeft"].includes(key)) {
           e.preventDefault()
-          clearInterval(interval)
-          if (ctrlKey) {
-              amount = 30
-          }
-          video.jumpTo($position - amount)
-          positionUpdater()
+          jumpTo($position - amount)
       }
   }
 
@@ -104,7 +107,7 @@
 
 <main>
   <Youtube bind:this={video} videoId={DATA.uid} />
-  <Modules on:selectModule={onSelectModule} modules={DATA.modules} />
+  <Modules on:repositionInModule={onRepositionInModule} on:selectModule={onSelectModule} modules={DATA.modules} />
 </main>
 
 <style>

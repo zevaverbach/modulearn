@@ -1,4 +1,5 @@
 const add_indices = objects => objects.map((object, index) => ({...{index}, ...object}))
+const add_durations = objects => objects.map(object => ({...{duration: object.end - object.start}, ...object}))
 
 const _modules = [
     {
@@ -58,7 +59,7 @@ const _modules = [
     {
       name: 'create a kedro project',
       start: 1038,
-      end: 1175,
+      end: 2932,
       outcome: 'create a new kedro project',
     },
   ]
@@ -72,5 +73,5 @@ export default {
   outcomes: [
     'I know how to use Kedro in a basic way.',
   ],
-  modules: add_indices(_modules)
+  modules: add_durations(add_indices(_modules))
 };

@@ -5,7 +5,7 @@
 
 <span style="float: left">
   {#each modules as module}
-    <Module on:selectModule {module} />
+    <Module on:repositionInModule on:selectModule {module} />
   {/each}
 </span>
 
