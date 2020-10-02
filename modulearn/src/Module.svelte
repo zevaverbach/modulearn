@@ -10,21 +10,20 @@
 
   let styl; let selected; let progress;
   $: selected = $currentModule && $currentModule.name === module.name
-  $: if (selected) progress = getProgress($position)
-  $: styl = selected 
-      ? `background: linear-gradient(to right, var(--finished-bg) 0%, var(--finished-bg) ${progress + 1}%, var(--pending-bg) ${100 - progress}%, var(--pending-bg) 100%)` 
-      : ""
-
+  $: if (selected) {
+    progress = getProgress($position)
+  }
   // TODO: add checkboxes for 'want to watch'
   // TODO: gray out watched modules
 </script>
 
-<div on:click={() => dispatcher("selectModule", { module })} ><span style="{styl}" >I want to {module.outcome}.</span></div>
-{#if progress}
-<div>
-  <progress value={progress} max=100>Hi</progress>
+<div on:click={() => dispatcher("selectModule", { module })} >
+  <span style="{styl}" >I want to {module.outcome}.</span>
+  {#if selected}
+    <progress value={progress} max=100>Hi</progress>
+  {/if}
 </div>
-{/if}
+
 
 
 <style>
