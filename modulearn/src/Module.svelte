@@ -2,24 +2,29 @@
   import { createEventDispatcher } from 'svelte';
   import { currentModule, position } from "./stores"
 
-  const dispatcher = createEventDispatcher()
+  const dispatch = createEventDispatcher()
 
   export let module
   const duration = module.end - module.start
   const getProgress = pos => (pos - module.start) / duration * 100
 
-  let styl; let selected; let progress;
+  let selected; let progress; let klass;
+
   $: selected = $currentModule && $currentModule.name === module.name
   $: if (selected) {
-    progress = getProgress($position)
-  }
+      progress = getProgress($position)
+      klass = "current"
+    } else {
+      progress = null;
+      klass = ""
+    }
   // TODO: add checkboxes for 'want to watch'
   // TODO: gray out watched modules
 </script>
 
-<div on:click={() => dispatcher("selectModule", { module })} >
-  <span style="{styl}" >I want to {module.outcome}.</span>
-  {#if selected}
+<div on:click={() => dispatch("selectModule", { module })} >
+  <span class="{klass}">I want to {module.outcome}.</span>
+  {#if progress}
     <progress value={progress} max=100>Hi</progress>
   {/if}
 </div>
@@ -28,21 +33,12 @@
 
 <style>
   @media (prefers-color-scheme: light) {
-    /* span.current { background-color: yellow;} */
+    span.current { background-color: yellow;}
     span.current:hover { background-color: lightgrey; }
-	:root {
-	  --pending-bg: yellow; 
-      --finished-bg: white;
-	}
   }
 
   @media (prefers-color-scheme: dark) {
-	 :root {
-	  --pending-bg: #222; 
-      --finished-bg: blue;
-	}
-
-    /* span.current { background-color: blue; } */
+    span.current { background-color: blue; }
     span:hover {
       background-color: lavender;
       color: #222;

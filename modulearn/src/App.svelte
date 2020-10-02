@@ -7,7 +7,7 @@
   import { getModuleIndex, getModule } from './utils'
   import DATA from './data'
 
-  let video; let interval; let timeout; let firstUpdate;
+  let video; let interval; let timeout;
 
   // TODO: load data from JSON or an API
   // TODO: validate the data: overlaps? gaps? (gaps should be ok).
@@ -16,16 +16,12 @@
   // TODO: (depends on above) enable search
 
   const positionUpdater = () => {
-      if (firstUpdate) {
-          firstUpdate = false
-          return 
-      }
     interval = setInterval(() => {
-      const newModule = getModule($position)
       const pos = video.position()
+      const newModule = getModule(pos)
+      if (!pos) return console.log('no pos')
       position.update(() => pos)
-        if (!newModule 
-            || newModule && !$currentModule 
+        if (newModule && !$currentModule 
             || newModule && $currentModule && newModule.name !== $currentModule.name)
         { currentModule.update(() => newModule) }
     }, 100)
@@ -39,8 +35,7 @@
       currentModule.update(() => module)
       position.update(() => module.start)
       video.jumpTo(module.start)
-      firstUpdate = true
-      timeout = setTimeout(positionUpdater, 500)
+      positionUpdater()
     }
   }
 
@@ -56,12 +51,12 @@
       } else if ([32, "Space"].includes(code)) {
           video.toggle()
       } else if (["l", "ArrowRight"].includes(key)) {
-          video.jumpTo($position + 5)
           clearInterval(interval)
+          video.jumpTo($position + 5)
           positionUpdater()
       } else if (["h", "ArrowLeft"].includes(key)) {
-          video.jumpTo($position - 5)
           clearInterval(interval)
+          video.jumpTo($position - 5)
           positionUpdater()
       }
   }
@@ -85,6 +80,7 @@
       onSelectModule({detail: {module: mod}})
     }
   }
+
 
 </script>
 
