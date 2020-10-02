@@ -9,12 +9,6 @@
 
   let video; let interval; let timeout;
 
-  // TODO: load data from JSON or an API
-  // TODO: validate the data: overlaps? gaps? (gaps should be ok).
-  // TODO: support segments from multiple videos
-  //   - youtube iframes can have a start/end time, for example
-  // TODO: (depends on above) enable search
-
   const positionUpdater = () => {
     interval = setInterval(() => {
       const pos = video.position()
@@ -50,19 +44,26 @@
   }
 
   const handleKeyDown = e => {
-      e.preventDefault()
       const { key, code } = e
+      if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
+          return
+      }
       if (["j", "ArrowDown"].includes(key)) {
+          e.preventDefault()
           nextModule()
       } else if (["k", "ArrowUp"].includes(key)) {
+          e.preventDefault()
           prevModule()
       } else if ([32, "Space"].includes(code)) {
+          e.preventDefault()
           toggle(video)
       } else if (["l", "ArrowRight"].includes(key)) {
+          e.preventDefault()
           clearInterval(interval)
           video.jumpTo($position + 5)
           positionUpdater()
       } else if (["h", "ArrowLeft"].includes(key)) {
+          e.preventDefault()
           clearInterval(interval)
           video.jumpTo($position - 5)
           positionUpdater()

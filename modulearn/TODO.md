@@ -1,0 +1,12 @@
+- [ ] load data from JSON or an API
+- [ ] validate the data: overlaps? gaps?
+- [ ] support segments from multiple videos
+- [ ] youtube iframes can have a start/end time, for example
+- [ ] (depends on above) enable search
+- [ ] add checkboxes for 'want to watch'
+- [ ] gray out watched modules
+- [ ] resolve the 'flashing'/re-rendering of the progress bars
+- [ ] related to above: don't re-render the progress bar to "done" or "empty" in current module
+  right before switch
+- [ ] make it work decently for mobile!
+- [ ] either don't allow going before the first module, or fix it so that the first module isn't highlighted when watching the pre-module content (first solution is easier)

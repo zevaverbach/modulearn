@@ -18,9 +18,6 @@
       progress = null;
       klass = ""
     }
-  // TODO: add checkboxes for 'want to watch'
-  // TODO: gray out watched modules
-  // TODO: resolve the 'flashing'/re-rendering of the progress bars
 </script>
 
 <div on:click={() => dispatch("selectModule", { module })} >

@@ -1,105 +1,110 @@
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+[Demo](https://modulearn.vercel.app)
 
----
+# Purpose
+Learning something new is exciting and daunting. It can also be annoying and time-consuming when you already know a significant part of what's being taught.
 
-# svelte app
+## Existing Solutions
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+### Fast-Forwarding
+A lot of learning material is broken down into modules, and to an extent the later material builds on the earlier. This makes fast-forwarding/skipping modules a viable solution. You can fast-forward even when things aren't so nicely broken down.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+### Keyword Search
+Sometimes there's transcripts provided along with recorded learning material. Whether they're tied interactively to the media or not, you can search for the keywords you're most interested in and jump to those spots with relative ease.
 
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+### Learning by Doing
+A lot of the time the best way to learn is to work on a project that uses the skill you want to learn. When you get stuck, just Google your way out of it or go to the relevant part of the documentation.
+
+## Proposed Solution
+Simple navigation across and within learning "modules", enabled by 
+
+1) a plugin linking the content with the navigation
+2) JSON for every module/submodule indicating their _prerequisites_ and intended learning _outcomes_
+
+### Creating the JSON Metadata
+(see JSON example under "API/Recorded Media" below)
+
+For someone familiar with a unit of learning -- say, a 45-minute tech talk -- they may be able to create the JSON by hand without a lot of trouble.
+
+For large bodies of media, it might be better to try to automate this using transcripts + NLP, perhaps by including existing metadata about the media such as tables of contents, descriptions, etc.
+
+# Business Model
+... (see "Things That Could be Built..." below)
+
+## Preexisting Assets
+There is a massive and growing body of media which is fodder for annotation and modularization:
+
+1) podcasts
+2) conference talks
+3) news media
+4) MOOCs
+5) topical/long-form YouTube
+6) docuseries
+7) ...
+
+# API
+
+## Recorded Media
+Provide JSON file like this:
+
+```
+{
+  "platform": "YouTube"
+  "uid": "askasdl;",
+  "prereqs": [
+    "I know a programming language to some extent.",
+    "I know how to use a terminal to some extent."
+  ],
+  "outcomes": [
+    "I know how to navigate a codebase."
+  ],
+  "modules": [
+    {
+      "name": "Find a Good Project",
+      "start": 25.32,
+      "end": 141.12,
+      "outcome": "have a project in mind whose codebase I want to navigate."
+    },
+    {
+      "name": "Clone the Project",
+      "start": 141.12,
+      "end": 157.65,
+      "outcome": "cloned the project."
+    },
+    ...
+  ]
+}
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
+### Notes
+- "start" is in seconds
+- "prereqs" and "outcomes" should eventually support module names which are standardized and map to fuller definitions
 
+# UI
+A plugin/iframe that lets you mark an outcome as "done", indicating that you already know the topic, so it skips you to the relevant parts. Start with YouTube.
 
-## Get started
+Prereqs: TBD
 
-Install the dependencies...
+## Static Media
+TBD
 
-```bash
-cd svelte-app
-npm install
-```
+# Applications
 
-...then start [Rollup](https://rollupjs.org):
+## Podcasts
+Some podcasts provide helpful metadata for navigating to the parts you're interested in. Then there's always the handy fast-forward button. Wouldn't it be nicer if you could 
 
-```bash
-npm run dev
-```
+1) check the boxes of the topics you're interested in and have those queued up?
+2) store the "want to listen" items that you don't yet have the requisite knowledge to understand?
+3) have a standardized, centralized list of topics you a) are interested in and b) understand?
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+# Things That Could be Built On Top of It
+Searchable video collections to retrieve the submodules you're interested in, and maybe even create a learning roadmap for a given topic.
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+# Resources
+- [YouTube iframe API](https://developers.google.com/youtube/iframe_api_reference#Retrieving_video_information)
+- use asciinema for tech talk type things?
+  - or [castty](https://github.com/dhobsd/castty) (includes sound)
+- [plyr.js](https://github.com/sampotts/plyr#api)
+  - supposedly could be used alongside streaming via DASH?
+- [streaming](https://github.com/Dash-Industry-Forum/dash.js/wiki)
+- https://github.com/vime-js/vime
+- https://github.com/zevaverbach/svelte-youtube
