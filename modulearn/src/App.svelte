@@ -14,9 +14,9 @@
       const pos = video.position()
       const newModule = getModule(pos)
       position.update(() => pos)
-        if (newModule && !$currentModule 
-            || newModule && $currentModule && newModule.name !== $currentModule.name)
-        { currentModule.update(() => newModule) }
+        if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.name !== $currentModule.name)) { 
+          currentModule.update(() => newModule) 
+        }
     }, 100)
   }
 
@@ -41,41 +41,41 @@
   onMount(() => positionUpdater())
 
   const toggle = video => {
-      if (video.paused()) {
-          video.play()
-      } else {
-          video.pause()
-      }
+    if (video.paused()) {
+      video.play()
+    } else {
+      video.pause()
+    }
   }
 
   const jumpTo = pos => {
-      clearInterval(interval)
-      video.jumpTo(pos)
-      positionUpdater()
+    clearInterval(interval)
+    video.jumpTo(pos)
+    positionUpdater()
   }
 
   const handleKeyDown = e => {
-      const { key, code, ctrlKey, shiftKey, altKey, metaKey } = e
+    const { key, code, ctrlKey, shiftKey, altKey, metaKey } = e
 
-      if (shiftKey || altKey || metaKey) return
+    if (shiftKey || altKey || metaKey) return
 
-      const amount = ctrlKey ? 30 : 5
-      if (["j", "ArrowDown"].includes(key)) {
-          e.preventDefault()
-          nextModule()
-      } else if (["k", "ArrowUp"].includes(key)) {
-          e.preventDefault()
-          prevModule()
-      } else if ([32, "Space"].includes(code)) {
-          e.preventDefault()
-          toggle(video)
-      } else if (["l", "ArrowRight"].includes(key)) {
-          e.preventDefault()
-          jumpTo($position + amount)
-      } else if (["h", "ArrowLeft"].includes(key)) {
-          e.preventDefault()
-          jumpTo($position - amount)
-      }
+    const amount = ctrlKey ? 30 : 5
+    if (["j", "ArrowDown"].includes(key)) {
+      e.preventDefault()
+      nextModule()
+    } else if (["k", "ArrowUp"].includes(key)) {
+      e.preventDefault()
+      prevModule()
+    } else if ([32, "Space"].includes(code)) {
+      e.preventDefault()
+      toggle(video)
+    } else if (["l", "ArrowRight"].includes(key)) {
+      e.preventDefault()
+      jumpTo($position + amount)
+    } else if (["h", "ArrowLeft"].includes(key)) {
+      e.preventDefault()
+      jumpTo($position - amount)
+    }
   }
 
   const nextModule = () => {
