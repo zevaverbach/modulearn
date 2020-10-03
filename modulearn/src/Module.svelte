@@ -48,9 +48,15 @@
   }
 
   @media (prefers-color-scheme: dark) {
-    span.current { background-color: blue; }
+    span.current { 
+      background-color: blue; 
+      box-shadow: 4px 4px black;
+      color: #ddd;
+    }
     span:hover {
       background-color: purple;
+      box-shadow: 4px 4px black;
+      color: #ddd;
     }
     progress {
       -webkit-appearance: none;
@@ -59,9 +65,11 @@
       border: none;
       width: 240px;
       height: 15;
+      box-shadow: 4px 4px black;
     }
     progress::-webkit-progress-bar {
       background-color: #ddd;
+      box-shadow: 4px 4px black;
     }
     progress::-webkit-progress-value {
       background-color: yellow;
@@ -69,6 +77,7 @@
 
     progress::-moz-progress-bar {
       background-color: #ddd;
+      box-shadow: 4px 4px black;
     }
     progress::-moz-progress-bar-value {
       background-color: yellow;
