@@ -52,11 +52,27 @@
     span:hover {
       background-color: purple;
     }
-  }
+    progress {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: none;
+      width: 240px;
+      height: 15;
+    }
+    progress::-webkit-progress-bar {
+      background-color: #ddd;
+    }
+    progress::-webkit-progress-value {
+      background-color: yellow;
+    }
 
-  progress {
-    width: 240px;
-    height: 1.2em;
+    progress::-moz-progress-bar {
+      background-color: #ddd;
+    }
+    progress::-moz-progress-bar-value {
+      background-color: yellow;
+    }
   }
 
   div { padding: .3em; }
