@@ -10,7 +10,7 @@
 
   let selected; let progress; let klass; let progressBar
 
-  $: selected = $currentModule && $currentModule.name === module.name
+  $: selected = $currentModule && $currentModule.index === module.index
   $: if (selected) {
       progress = getProgress($position)
       klass = "current"

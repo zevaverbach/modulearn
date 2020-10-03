@@ -4,17 +4,19 @@
 
   import Modules from './Modules.svelte'
   import { position, currentModule } from './stores'
-  import { getModuleIndex, getModule } from './utils'
-  import DATA from './data'
+  import { getModule } from './utils'
+  import { kedro_modules } from './data'
 
   let video; let interval; let timeout;
+  $: _currentModule = $currentModule || kedro_modules[0]
 
   const positionUpdater = () => {
     interval = setInterval(() => {
       const pos = video.position()
       const newModule = getModule(pos)
       position.update(() => pos)
-        if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.name !== $currentModule.name)) { 
+        if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.index !==
+            $currentModule.index)) { 
           currentModule.update(() => newModule) 
         }
     }, 100)
@@ -22,7 +24,7 @@
 
   const onSelectModule = event => {
     const { module } = event.detail
-    if (module && !$currentModule || module.name !== $currentModule.name) {
+    if (module && !$currentModule || module.index !== $currentModule.index) {
       clearTimeout(timeout)
       clearInterval(interval)
       currentModule.update(() => module)
@@ -80,11 +82,11 @@
 
   const nextModule = () => {
     if (!$currentModule) {
-      return onSelectModule({detail: {module: DATA.modules[0]}})
+      return onSelectModule({detail: {module: kedro_modules[0]}})
     }
     const idx = $currentModule.index
-    if (idx < DATA.modules.length - 1) {
-      const mod = DATA.modules[idx + 1]
+    if (idx < kedro_modules.length - 1) {
+      const mod = kedro_modules[idx + 1]
       onSelectModule({detail: {module: mod}})
     }
   }
@@ -93,7 +95,7 @@
     if (!$currentModule) return
     const idx = $currentModule.index || 1
     if (idx > 0) {
-      const mod = DATA.modules[idx - 1]
+      const mod = kedro_modules[idx - 1]
       onSelectModule({detail: {module: mod}})
     }
   }
@@ -104,8 +106,9 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <main>
-  <Youtube bind:this={video} videoId={DATA.uid} />
-  <Modules on:repositionInModule={onRepositionInModule} on:selectModule={onSelectModule} modules={DATA.modules} />
+  <Youtube bind:this={video} videoId={_currentModule.uid} />
+  <Modules on:repositionInModule={onRepositionInModule} on:selectModule={onSelectModule}
+      modules={kedro_modules} />
 </main>
 
 <style>
