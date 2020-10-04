@@ -1,33 +1,37 @@
 <script>
-  import Youtube from '@sveltecasts/svelte-youtube'
   import { onMount } from 'svelte';
 
   import Modules from './Modules.svelte'
+  import YouTube from './YouTube.svelte'
   import { position, currentModule } from './stores'
   import { getModule } from './utils'
-  import { kedro_modules } from './data'
+  import { modules } from './data'
 
-  let video; let interval; let timeout;
-  $: _currentModule = $currentModule || kedro_modules[0]
+  let video; let interval; let timeout; let uid = modules[0].uid;
+
+  $: if ($currentModule) uid = $currentModule.uid
 
   const positionUpdater = () => {
     interval = setInterval(() => {
       const pos = video.position()
-      const newModule = getModule(pos)
+      const newModule = getModule(pos, $currentModule)
       position.update(() => pos)
-        if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.index !==
-            $currentModule.index)) { 
+        if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.id !==
+            $currentModule.id)) { 
           currentModule.update(() => newModule) 
+          uid = newModule.uid
         }
     }, 100)
   }
 
   const onSelectModule = event => {
     const { module } = event.detail
-    if (module && !$currentModule || module.index !== $currentModule.index) {
+    if (module && !$currentModule || module.id !== $currentModule.id) {
       clearTimeout(timeout)
       clearInterval(interval)
       currentModule.update(() => module)
+      // TODO: make it change the uid successfully on the iframe!
+      //  possibly it's simplest to create a new iframe whenever you switch modules
       position.update(() => module.start)
       video.jumpTo(module.start)
       positionUpdater()
@@ -82,11 +86,11 @@
 
   const nextModule = () => {
     if (!$currentModule) {
-      return onSelectModule({detail: {module: kedro_modules[0]}})
+      return onSelectModule({detail: {module: modules[0]}})
     }
     const idx = $currentModule.index
-    if (idx < kedro_modules.length - 1) {
-      const mod = kedro_modules[idx + 1]
+    if (idx < modules.length - 1) {
+      const mod = modules[idx + 1]
       onSelectModule({detail: {module: mod}})
     }
   }
@@ -95,7 +99,7 @@
     if (!$currentModule) return
     const idx = $currentModule.index || 1
     if (idx > 0) {
-      const mod = kedro_modules[idx - 1]
+      const mod = modules[idx - 1]
       onSelectModule({detail: {module: mod}})
     }
   }
@@ -106,9 +110,14 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <main>
-  <Youtube bind:this={video} videoId={_currentModule.uid} />
-  <Modules on:repositionInModule={onRepositionInModule} on:selectModule={onSelectModule}
-      modules={kedro_modules} />
+  {#key uid}
+    <YouTube bind:this={video} videoId={uid} />
+  {/key}
+  <Modules 
+      on:repositionInModule={onRepositionInModule} 
+      on:selectModule={onSelectModule}
+      modules={modules} 
+  />
 </main>
 
 <style>

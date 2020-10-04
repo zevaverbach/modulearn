@@ -1,6 +1,17 @@
-const enrichObjects = (platform, uid, objects) => objects.map((object, index) => ({...{index, duration: object.end - object.start, uid, platform}, ...object}))
+const enrichObjects = (platform, uid, objects, startingIndex = 0) => objects.map((object, index) => (
+	{...{ 
+		index: index + startingIndex, 
+		duration: object.end - object.start, 
+		uid, 
+		platform,
+		id: `${uid}-${object.start}`,
+		isLast: index === objects.length - 1
+	}, 
+		...object}
+  )
+)
 
-export const kedro_modules = enrichObjects(
+const kedro_modules = enrichObjects(
   'YouTube',
   'ZPxuohy5SoU',
   [
@@ -56,3 +67,38 @@ export const kedro_modules = enrichObjects(
     },
   ]
 )
+
+const airflow_modules = enrichObjects(
+    'YouTube',
+    'AHMm1wfGuHE',
+    [
+      {
+        start: 0,
+        end: 17,
+        outcome: 'skip this part',
+      },
+      {
+        start: 17,
+        end: 388,
+        outcome: 'know what Airflow is',
+      },
+      {
+        start: 388,
+        end: 674,
+        outcome: 'see a demo of Airflow',
+      },
+      {
+        start: 674,
+        end: 852,
+        outcome: 'know what makes Airflow great',
+      },
+      {
+        start: 852,
+        end: 983,
+        outcome: 'know where Airflow fits into the hierarchy of data science',
+      },
+	],
+	kedro_modules.length,
+)
+
+export const modules = kedro_modules.concat(airflow_modules)
