@@ -14,6 +14,6 @@
 - [ ] make it work decently for mobile!
   - [Plyr.js](https://github.com/sampotts/plyr#api) might help with this
     - [Svelte Wrapper](https://github.com/benwoodward/svelte-plyr#readme)
-- [ ] either don't allow going before the first module, or fix it so that the first module isn't highlighted when watching the pre-module content (first solution is easier)
-- [ ] add "flat" drop shadow to progress bar and modules
+- [x] either don't allow going before the first module, or fix it so that the first module isn't highlighted when watching the pre-module content (first solution is easier)
+- [x] add "flat" drop shadow to progress bar and modules
 - [ ] add a diagonally oriented aqua triangle at the upper right, as the logo

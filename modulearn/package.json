@@ -20,7 +20,6 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "@sveltecasts/svelte-youtube": "git+https://github.com/zevaverbach/svelte-youtube.git",
     "g": "^2.0.1",
     "sirv-cli": "^1.0.0"
   }
