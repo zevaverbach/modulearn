@@ -21,3 +21,4 @@
   doesn't advance
 - [ ] bug: when you go backwards on the YouTube timeline, it doesn't update the selected module
   (forwards is fine)
+- [ ] show the module name in a header
