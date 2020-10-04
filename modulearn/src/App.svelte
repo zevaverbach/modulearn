@@ -14,6 +14,7 @@
   const positionUpdater = () => {
     interval = setInterval(() => {
       const pos = video.position()
+      if (pos == null) return
       const newModule = getModule(pos, $currentModule)
       position.update(() => pos)
         if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.id !==

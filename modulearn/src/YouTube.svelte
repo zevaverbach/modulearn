@@ -62,9 +62,9 @@
     return false;
   }
 
-  export function position() { return player.getCurrentTime() }
+  export function position() { if (player.getCurrentTime) return player.getCurrentTime() }
   export function play() { player.playVideo() }
-  export function jumpTo(seconds) { player.seekTo(seconds) }
+  export function jumpTo(seconds) { if (player.seekTo) player.seekTo(seconds) }
   export function pause() { player.pauseVideo() }
   export function paused() { return [5, 2, -1].includes(player.getPlayerState()) }
   export function buffering() { return player.getPlayerState() === 3 }

@@ -9,8 +9,8 @@
   const getProgress = pos => (pos - module.start) / module.duration * 100
 
   let selected; let progress; let klass; let progressBar
-
   $: selected = $currentModule && $currentModule.id === module.id
+
   $: if (selected) {
       progress = getProgress($position)
       klass = "current"

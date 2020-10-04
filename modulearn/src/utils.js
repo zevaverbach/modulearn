@@ -1,6 +1,7 @@
 import { modules } from './data'
 
 export const getModule = (position, currentModule) => {
+  if (!currentModule) return modules[0]
   if (position < currentModule.end) {
     return currentModule
   }
