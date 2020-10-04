@@ -1,4 +1,4 @@
-import { modules } from './data'
+import modules from './data'
 import { uid } from './stores'
 import { get } from 'svelte/store';
 

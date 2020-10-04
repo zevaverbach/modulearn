@@ -8,7 +8,8 @@
 
   let divId = `player_${parseInt(Math.random() * 100000).toString()}`
 
-  export let videoId; export let height = "390"; export let width = "640"
+  export let videoId; export let height = "390"; export let width = "640"; export let start;
+  export let end;
 
   let player;
 
@@ -23,7 +24,6 @@
     }
 
     window.onYouTubeIframeAPIReady = function() {
-      //console.log('hello')
       window.dispatchEvent(new Event("YouTubeIframeAPIReady"));
     };
 
@@ -46,7 +46,9 @@
         events: {
           //'onReady': onPlayerReady,
           onStateChange: onPlayerStateChange
-        }
+        },
+        playerVars: { 'autoplay': 1, start, end, mute: 1 },
+
       });
     }
     if (YouTubeIframeAPIReady) {
@@ -69,6 +71,8 @@
   export function paused() { return [5, 2, -1].includes(player.getPlayerState()) }
   export function buffering() { return player.getPlayerState() === 3 }
   export function state() { return player.getPlayerState() }
+  export function unMute() { return player.unMute() }
+  export function muted() { return player.isMuted() }
 </script>
 
 <span class="yt-component" style="float: left">

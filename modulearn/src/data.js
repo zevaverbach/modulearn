@@ -101,4 +101,4 @@ const airflow_modules = enrichObjects(
 	kedro_modules.length,
 )
 
-export const modules = kedro_modules.concat(airflow_modules)
+export default kedro_modules.concat(airflow_modules)

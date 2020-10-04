@@ -5,7 +5,7 @@
   import YouTube from './YouTube.svelte'
   import { position, currentModule, uid } from './stores'
   import { getModule } from './utils'
-  import { modules } from './data'
+  import modules from './data'
 
   let video; let interval; let timeout;
 
@@ -14,6 +14,8 @@
       const pos = video.position()
       if (pos == null) return
       const newModule = getModule(pos, $currentModule)
+
+      if (video.muted()) video.unMute()
       position.update(() => pos)
         if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.id !==
             $currentModule.id)) { 
@@ -108,8 +110,8 @@
 <svelte:window on:keydown={handleKeyDown} />
 
 <main>
-  {#key $uid}
-    <YouTube bind:this={video} videoId={$uid} />
+  {#key $currentModule}
+    <YouTube bind:this={video} videoId={$uid} start={$currentModule.start} end={$currentModule.end}/>
   {/key}
   <Modules 
       on:repositionInModule={onRepositionInModule} 
