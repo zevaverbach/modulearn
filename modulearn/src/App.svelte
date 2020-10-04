@@ -3,7 +3,7 @@
 
   import Modules from './Modules.svelte'
   import YouTube from './YouTube.svelte'
-  import { position, currentModule, uid } from './stores'
+  import { position, currentModule, uid, muted } from './stores'
   import { getModule } from './utils'
   import modules from './data'
 
@@ -15,7 +15,11 @@
       if (pos == null) return
       const newModule = getModule(pos, $currentModule)
 
-      if (video.muted()) video.unMute()
+      if ($muted && !video.muted()) {
+          video.mute()
+      } else if (!$muted && video.muted()) {
+          video.unMute()
+      }
       position.update(() => pos)
         if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.id !==
             $currentModule.id)) { 
@@ -64,6 +68,7 @@
     const { key, code, ctrlKey, shiftKey, altKey, metaKey } = e
 
     if (shiftKey || altKey || metaKey) return
+    if (!video) return
 
     const amount = ctrlKey ? 30 : 5
     if (["j", "ArrowDown"].includes(key)) {
@@ -72,7 +77,7 @@
     } else if (["k", "ArrowUp"].includes(key)) {
       e.preventDefault()
       prevModule()
-    } else if ([32, "Space"].includes(code)) {
+    } else if ([32, "Space"].includes(code) || key === "`") {
       e.preventDefault()
       toggle(video)
     } else if (["l", "ArrowRight"].includes(key)) {
@@ -81,6 +86,16 @@
     } else if (["h", "ArrowLeft"].includes(key)) {
       e.preventDefault()
       jumpTo($position - amount)
+    } else if (key === "m") {
+      e.preventDefault()
+      muted.update(m => !m)
+    } else if (key === ";") {
+      e.preventDefault()
+        if (video.paused()) {
+            toggle(video)
+        } else {
+          jumpTo($position - 5)
+        }
     }
   }
 
@@ -111,7 +126,13 @@
 
 <main>
   {#key $currentModule}
-    <YouTube bind:this={video} videoId={$uid} start={$currentModule.start} end={$currentModule.end}/>
+    <YouTube 
+      bind:this={video} 
+      videoId={$uid} 
+      start={$currentModule.start} 
+      end={$currentModule.end}
+      controls={0}
+    />
   {/key}
   <Modules 
       on:repositionInModule={onRepositionInModule} 

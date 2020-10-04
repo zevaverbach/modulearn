@@ -9,7 +9,7 @@
   let divId = `player_${parseInt(Math.random() * 100000).toString()}`
 
   export let videoId; export let height = "390"; export let width = "640"; export let start;
-  export let end;
+  export let end; export let controls = 1;
 
   let player;
 
@@ -47,7 +47,7 @@
           //'onReady': onPlayerReady,
           onStateChange: onPlayerStateChange
         },
-        playerVars: { 'autoplay': 1, start, end, mute: 1 },
+        playerVars: { 'autoplay': 1, start, end, mute: 1, controls, disablekb: 1 },
 
       });
     }
@@ -73,6 +73,7 @@
   export function state() { return player.getPlayerState() }
   export function unMute() { return player.unMute() }
   export function muted() { return player.isMuted() }
+  export function mute() { return player.mute() }
 </script>
 
 <span class="yt-component" style="float: left">

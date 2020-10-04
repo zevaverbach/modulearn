@@ -1,10 +1,14 @@
 - [x] unmute the player on each module change?
-- [ ] bug: when you go backwards on the YouTube timeline, it doesn't update the selected module
-  (forwards is fine)
-    - [ ] related bug: when you go 5/30 seconds back to an earlier module, it doesn't switch to highlighting
-      that module (forwards is fine)
-- [ ] ` for pause/unpause
-- [ ] `m` for mute/unmute
+- [x] ` for pause/unpause
+- [x] `m` for mute/unmute
+- [ ] add a 'muted' indicator outside the iframe
+- [ ] bug: when you go 5/30 seconds back to an earlier module, it doesn't switch to highlighting
+  that module (forwards is fine)
+- [ ] resolve the 'flashing'/re-rendering of the progress bars
+   - [ ] hide the progress bar until maybe "unmute"?
+- [x] remove controls, since we want to be nonlinear
+- [ ] don't let the YouTube iframe take control of keyboard events
+  - [ ] make it unclickable if possible
 - [ ] possible to "hide" iframes that have already been loaded and "show" them on selection?
   - [ ] if so, can you load all the iframes in the background on first page load?
 - [ ] remove unused code now that we're totally modular
@@ -16,7 +20,6 @@
 - [ ] (depends on above) enable search
 - [ ] add checkboxes for 'want to watch'
 - [ ] gray out watched modules
-- [ ] resolve the 'flashing'/re-rendering of the progress bars
 - [ ] related to above: don't re-render the progress bar to "done" or "empty" in current module
   right before switch
 - [ ] make it work decently for mobile!
