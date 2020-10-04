@@ -3,17 +3,20 @@
   import Module from "./Module.svelte"
 </script>
 
-<span style="float: left">
+<div style="float: left">
   {#each modules as module}
     <Module on:repositionInModule on:selectModule {module} />
   {/each}
-</span>
+</div>
 
 <style>
-  span {
-    margin-left: 4em;
-    margin-top: 2em;
+  div {
+    background-color: #333;
+    margin-left: 1em;
+    margin-top: .3em;
     text-align: left;
-    box-shadow: 14px 14px #222;
+    box-shadow: 14px 14px #111;
+    padding-top: .5em;
+    padding-bottom: .5em;
   }
 </style>

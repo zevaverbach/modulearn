@@ -72,13 +72,14 @@
   export function buffering() { return player.getPlayerState() === 3 }
   export function state() { return player.getPlayerState() }
   export function unMute() { return player.unMute() }
-  export function muted() { return player.isMuted() }
+  export function muted() { if (player.isMuted) return player.isMuted() }
   export function mute() { return player.mute() }
 </script>
 
-<span class="yt-component" style="float: left">
-  <div id={divId} />
-</span>
+<div>
+    <div class="yt-component" style="float: left;" id={divId} />
+</div>
+
 <style>
   .yt-component {
     box-shadow: 15px 15px #111;

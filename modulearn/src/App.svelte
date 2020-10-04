@@ -3,6 +3,7 @@
 
   import Modules from './Modules.svelte'
   import YouTube from './YouTube.svelte'
+  import Mute from './Mute.svelte'
   import { position, currentModule, uid, muted } from './stores'
   import { getModule } from './utils'
   import modules from './data'
@@ -11,21 +12,25 @@
 
   const positionUpdater = () => {
     interval = setInterval(() => {
+      updateMute()
       const pos = video.position()
       if (pos == null) return
       const newModule = getModule(pos, $currentModule)
+      if (!newModule) return
 
-      if ($muted && !video.muted()) {
-          video.mute()
-      } else if (!$muted && video.muted()) {
-          video.unMute()
-      }
       position.update(() => pos)
-        if ((newModule && !$currentModule) || (newModule && $currentModule && newModule.id !==
-            $currentModule.id)) { 
-          currentModule.update(() => newModule) 
-        }
+      if (!$currentModule || ($currentModule && newModule.id !== $currentModule.id)) { 
+        currentModule.update(() => newModule) 
+      }
     }, 100)
+  }
+
+  const updateMute = () => {
+    if ($muted && !video.muted()) {
+      video.mute()
+    } else if (!$muted && video.muted()) {
+      video.unMute()
+    }
   }
 
   const onSelectModule = event => {
@@ -123,17 +128,23 @@
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
+<svelte:head>
+  <title>Modulearn</title>
+</svelte:head>
 
 <main>
-  {#key $currentModule}
-    <YouTube 
-      bind:this={video} 
-      videoId={$uid} 
-      start={$currentModule.start} 
-      end={$currentModule.end}
-      controls={0}
-    />
-  {/key}
+  <div style="float: left; margin-bottom: 2em; margin-left: 1em;">
+    {#key $currentModule}
+      <YouTube 
+        bind:this={video} 
+        videoId={$uid} 
+        start={$currentModule.start} 
+        end={$currentModule.end}
+        controls={0}
+      />
+    {/key}
+  </div>
+  <Mute />
   <Modules 
       on:repositionInModule={onRepositionInModule} 
       on:selectModule={onSelectModule}
@@ -142,20 +153,16 @@
 </main>
 
 <style>
-  @media (prefers-color-scheme: dark) {
-    :global(body) {
-      background-color: #222;
-      color: #ddd;
-    }
+  :global(body) {
+    background-color: #222;
+    color: #ddd;
   }
 
   main {
-    text-align: center;
     padding: 1em;
     max-width: 240px;
     margin: 0 auto;
   }
-
 
   @media (min-width: 640px) {
     main {
