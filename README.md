@@ -1,4 +1,6 @@
-[Demo](https://modulearn.vercel.app)
+[Demo](https://modulearn.helpers.fun)
+
+This is a proof of concept for presenting "modules"/sections from multiple YouTube videos as a method of learning a topic. Easy navigability is a focus here: You can use arrow keys as well as vim bindings (`hjkl`) to navigate within and across modules. `shift` + arrow keys/`hl` do larger jumps within the content. Additionally, `m` to toggle mute and `;` to wind back five seconds and continue playing.
 
 # Purpose
 Learning something new is exciting and daunting. It can also be annoying and time-consuming when you already know a significant part of what's being taught.
@@ -14,7 +16,7 @@ Sometimes there's transcripts provided along with recorded learning material. Wh
 ### Learning by Doing
 A lot of the time the best way to learn is to work on a project that uses the skill you want to learn. When you get stuck, just Google your way out of it or go to the relevant part of the documentation.
 
-## Proposed Solution
+## Proposed Solution (Roadmap)
 Simple navigation across and within learning "modules", enabled by 
 
 1) a plugin linking the content with the navigation
@@ -27,10 +29,10 @@ For someone familiar with a unit of learning -- say, a 45-minute tech talk -- th
 
 For large bodies of media, it might be better to try to automate this using transcripts + NLP, perhaps by including existing metadata about the media such as tables of contents, descriptions, etc.
 
-# Business Model
+### Business Model
 ... (see "Things That Could be Built..." below)
 
-## Preexisting Assets
+#### Preexisting Assets
 There is a massive and growing body of media which is fodder for annotation and modularization:
 
 1) podcasts
@@ -41,9 +43,9 @@ There is a massive and growing body of media which is fodder for annotation and 
 6) docuseries
 7) ...
 
-# API
+### API
 
-## Recorded Media
+#### Recorded Media
 Provide JSON file like this:
 
 ```
@@ -75,28 +77,28 @@ Provide JSON file like this:
 }
 ```
 
-### Notes
+##### Notes
 - "start" is in seconds
 - "prereqs" and "outcomes" should eventually support module names which are standardized and map to fuller definitions
 
-# UI
+### UI
 A plugin/iframe that lets you mark an outcome as "done", indicating that you already know the topic, so it skips you to the relevant parts. Start with YouTube.
 
 Prereqs: TBD
 
-## Static Media
+### Static Media
 TBD
 
-# Applications
+### Applications
 
-## Podcasts
+#### Podcasts
 Some podcasts provide helpful metadata for navigating to the parts you're interested in. Then there's always the handy fast-forward button. Wouldn't it be nicer if you could 
 
 1) check the boxes of the topics you're interested in and have those queued up?
 2) store the "want to listen" items that you don't yet have the requisite knowledge to understand?
 3) have a standardized, centralized list of topics you a) are interested in and b) understand?
 
-# Things That Could be Built On Top of It
+### Things That Could be Built On Top of It
 Searchable video collections to retrieve the submodules you're interested in, and maybe even create a learning roadmap for a given topic.
 
 # Resources

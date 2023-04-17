@@ -64,7 +64,7 @@
     return false;
   }
 
-  export function position() { if (player.getCurrentTime) return player.getCurrentTime() }
+  export function position() { if (player && player.getCurrentTime) return player.getCurrentTime() }
   export function play() { player.playVideo() }
   export function jumpTo(seconds) { if (player.seekTo) player.seekTo(seconds) }
   export function pause() { player.pauseVideo() }
@@ -72,7 +72,7 @@
   export function buffering() { return player.getPlayerState() === 3 }
   export function state() { return player.getPlayerState() }
   export function unMute() { return player.unMute() }
-  export function muted() { if (player.isMuted) return player.isMuted() }
+  export function muted() { if (player && player.isMuted) return player.isMuted() }
   export function mute() { return player.mute() }
 </script>
 

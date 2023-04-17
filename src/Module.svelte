@@ -53,26 +53,14 @@
     color: #ddd;
   }
   progress {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
     border: none;
     width: 240px;
     height: 15;
-    box-shadow: 4px 4px black;
-  }
-  progress::-webkit-progress-bar {
     background-color: #ddd;
     box-shadow: 4px 4px black;
   }
-  progress::-webkit-progress-value {
-    background-color: yellow;
-  }
-  progress::-moz-progress-bar {
-    background-color: #ddd;
-    box-shadow: 4px 4px black;
-  }
-  progress::-moz-progress-bar-value {
+  progress[value] {
     background-color: yellow;
   }
   div { padding: .4em;
